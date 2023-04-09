@@ -7,7 +7,10 @@ Usage:
  python old_people.py
 """
 import os
-import inspect 
+import inspect
+import pandas as pd
+import sqlite3
+
 
 def main():
     global db_path
@@ -31,6 +34,11 @@ def get_old_people():
         list: (name, age) of old people 
     """
     # TODO: Create function body
+    con = sqlite3.connect
+    cur = con.cursor(cur)
+    cur.execute('SELECT NAME and AGE FROM PEOPLE WHERE AGE>=50')
+    con.commit
+    con.close()
     return []
 
 def print_name_and_age(name_and_age_list):
@@ -39,7 +47,9 @@ def print_name_and_age(name_and_age_list):
     Args:
         name_and_age_list (list): (name, age) of people
     """
-    # TODO: Create function body
+    # TODO: Create function body'
+    for name, age in name_and_age_list:
+            print(f'{name} is {age} years old.')
     return
 
 def save_name_and_age_to_csv(name_and_age_list, csv_path):
@@ -50,6 +60,9 @@ def save_name_and_age_to_csv(name_and_age_list, csv_path):
         csv_path (str): Path of CSV file
     """
     # TODO: Create function body
+    report_df = pd.DataFrame(name_and_age_list)
+    report_header = ('NAME', 'AGE')
+    report_df.to_csv(csv_path, header=report_header,index=False)
     return
 
 def get_script_dir():
